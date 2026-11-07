@@ -1,0 +1,18 @@
+services:
+  floci:
+    image: floci/floci:latest
+    container_name: floci
+    ports:
+      - "4566:4566"
+    environment:
+      - FLOCI_HOSTNAME=localhost
+
+  floci-ui:
+    image: floci/floci-ui:latest
+    container_name: floci-ui
+    ports:
+      - "4500:4500"
+    environment:
+      - FLOCI_ENDPOINT=http://floci:4566
+    depends_on:
+      - floci
