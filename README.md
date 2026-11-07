@@ -2,7 +2,7 @@
 
 Local-first Infrastructure as Code (IaC) playground using **Terraform** and the **Floci** AWS emulator. Run and test AWS resources (S3, SQS, etc.) locally via Docker/Podman (container at your choice)
 
----
+<br>
 
 ## 1. Prerequisites
 
@@ -13,7 +13,7 @@ Ensure the following tools are installed on your workstation:
 * **AWS CLI v2** (`aws --version`)
 * **Git**
 
----
+<br>
 
 ## 2. Environment Setup: The `awslocal` Alias
 
@@ -39,7 +39,7 @@ Expected output:
 }
 ```
 
----
+<br>
 
 ## 3. Quickstart
 
@@ -58,19 +58,24 @@ terraform init
 terraform apply -auto-approve
 ```
 
----
+<br>
 
 ## 4. Verifying Resources
 
-### Check State with Terraform:
+#### Check State with Terraform:
 ```bash
 terraform state list
 terraform output
 ```
 
-### Test via AWS CLI (`awslocal`):
+#### Test via AWS CLI (`awslocal`):
+
+
 
 #### S3 Operations:
+
+![S3 Demo](assets/awslocal_s3.gif)
+
 ```bash
 # List buckets
 awslocal s3 ls
@@ -84,6 +89,9 @@ awslocal s3 ls s3://my-floci-test-bucket/
 ```
 
 #### SQS Operations:
+
+![S3 Demo](assets/awslocal_sqs.gif)
+
 ```bash
 # List active queues
 awslocal sqs list-queues
@@ -98,11 +106,11 @@ awslocal sqs receive-message \
   --queue-url http://localhost:4566/000000000000/my-floci-test-queue
 ```
 
----
+<br>
 
 ## 5. Important Gotchas & Configuration Notes
 
-### 1. S3 Path-Style Addressing
+#### 1. S3 Path-Style Addressing
 By default, the AWS provider attempts to use **virtual-hosted-style addressing** (e.g., `http://bucket-name.localhost:4566`), which fails external DNS resolution (`no such host`). 
 
 To prevent this, the provider configuration in `main.tf` explicitly enables:
@@ -110,10 +118,10 @@ To prevent this, the provider configuration in `main.tf` explicitly enables:
 s3_use_path_style = true
 ```
 
-### 2. SQS Region Binding
+#### 2. SQS Region Binding
 Unlike S3 bucket operations which are global, SQS queue lookups are strictly regional. If queries return empty arrays (`"QueueUrls": []`), ensure requests pass `--region us-east-1` or use the `awslocal` alias configured above.
 
----
+<br>
 
 ## 6. Teardown & Cleanup
 
